@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 
 class Login extends StatelessWidget {
@@ -13,7 +12,7 @@ class Login extends StatelessWidget {
       showAuthActionSwitch: false,
       actions: [
         AuthStateChangeAction<SignedIn>((context, state) {
-          Navigator.pushReplacementNamed(context, '/profile');
+          Navigator.pushReplacementNamed(context, '/home');
         }),
       ],
     );

@@ -16,7 +16,7 @@ class DropdownInput extends StatelessWidget {
     return DropdownButtonHideUnderline(
       child: DropdownButton(
         value: value,
-        onChanged: onChange ?? () {},
+        onChanged: onChange ?? (value) {},
         items: items.map((dynamic item) {
           dynamic value = item;
           dynamic label = item;

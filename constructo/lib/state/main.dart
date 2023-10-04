@@ -1,3 +1,4 @@
+import 'package:constructo/state/ui/requisition/requisition_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -11,4 +12,5 @@ List<SingleChildWidget> rootBlocProviders = [
     return bloc;
   }),
   BlocProvider(create: (context) => LoaderBloc()),
+  BlocProvider(create: (context) => RequisitionUIBloc()),
 ];
