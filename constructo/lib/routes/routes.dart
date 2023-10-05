@@ -1,5 +1,7 @@
 import 'package:constructo/screens/home.dart';
 import 'package:constructo/screens/requisitions/add_requisition.dart';
+import 'package:constructo/screens/requisitions/requisition_list.dart';
+import 'package:constructo/screens/requisitions/view_requisition.dart';
 import 'package:page_transition/page_transition.dart';
 import '../screens/auth/login.dart';
 import '../screens/profile.dart';
@@ -9,6 +11,8 @@ class Routes {
   static const profile = '/profile';
   static const home = '/home';
   static const addRequisition = '/add-requisition';
+  static const viewRequisition = '/view-requisition';
+  static const requisitionList = '/requisition-list';
 
   static PageTransition? onGenerateRoute(route) {
     switch (route.name) {
@@ -20,6 +24,10 @@ class Routes {
         return PageTransition(child: const Home(), type: PageTransitionType.fade);
       case addRequisition:
         return PageTransition(child: const AddRequisition(), type: PageTransitionType.fade);
+      case viewRequisition:
+        return PageTransition(child: const ViewRequisition(), type: PageTransitionType.fade);
+      case requisitionList:
+        return PageTransition(child: const RequisitionList(), type: PageTransitionType.fade);
       default:
         return null;
     }

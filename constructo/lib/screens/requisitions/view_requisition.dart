@@ -6,8 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../components/common/core/buttons/custom_button.dart';
 
-class AddRequisition extends StatelessWidget {
-  const AddRequisition({super.key});
+class ViewRequisition extends StatelessWidget {
+  const ViewRequisition({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +25,21 @@ class AddRequisition extends StatelessWidget {
                   const SizedBox(height: 30),
                   Row(
                     children: [
-                      Text('New Requisition', style: Theme.of(context).textTheme.title3B),
+                      Text('Requisition Details', style: Theme.of(context).textTheme.title3B),
                     ],
                   ),
                   const SizedBox(height: 20),
                   const Divider(color: Colors.black),
+                  const SizedBox(height: 25),
+                  Row(
+                    children: [
+                      Text('REQ ######', style: Theme.of(context).textTheme.title3B),
+                      const Spacer(),
+                      Text(DateTime.now().toIso8601String().split("T")[0], style: Theme.of(context).textTheme.title3B),
+                    ],
+                  ),
+                  const SizedBox(height: 25),
+                  Text('Req Status: PENDING', style: Theme.of(context).textTheme.title3B),
                   const SizedBox(height: 25),
                 ],
               ),
@@ -58,7 +68,6 @@ class AddRequisition extends StatelessWidget {
                           Text('Supplier', style: Theme.of(context).textTheme.bodySB),
                           const Spacer(),
                           Text('Amount', style: Theme.of(context).textTheme.bodySB),
-                          const SizedBox(width: 60),
                         ],
                       ),
                       const SizedBox(height: 20),
@@ -67,70 +76,34 @@ class AddRequisition extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                Expanded(child: DropdownInput(placeholder: "Item", items: state.items, value: item["item"])),
-                                const SizedBox(width: 10),
-                                Expanded(child: DropdownInput(placeholder: "Supplier", items: state.suppliers, value: item["supplier"])),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  child: TextField(
-                                    decoration: const InputDecoration(
-                                      labelText: "Amount",
-                                    ),
-                                    keyboardType: TextInputType.number,
-                                    onChanged: (value) {},
-                                  ),
-                                ),
-                                const SizedBox(width: 20),
-                                GestureDetector(
-                                  onTap: () {
-                                    context.read<RequisitionUIBloc>().add(RemoveRequisitionItem(item));
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.black,
-                                      borderRadius: BorderRadius.circular(500),
-                                    ),
-                                    padding:  const EdgeInsets.all(5),
-                                    child: const Icon(Icons.close, color: Colors.white),
-                                  ),
-                                ),
+                                Text('Item#', style: Theme.of(context).textTheme.bodySB.copyWith(color: Colors.black.withOpacity(0.5), fontStyle: FontStyle.italic)),
+                                const Spacer(),
+                                Text('Supplier#', style: Theme.of(context).textTheme.bodySB.copyWith(color: Colors.black.withOpacity(0.5), fontStyle: FontStyle.italic)),
+                                const Spacer(),
+                                Text('##', style: Theme.of(context).textTheme.bodySB.copyWith(color: Colors.black.withOpacity(0.5), fontStyle: FontStyle.italic)),
                               ],
                             ),
                             const SizedBox(height: 10),
                           ],
                         ),
-                      Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          const Divider(color: Colors.black),
-                          GestureDetector(
-                              onTap: () {
-                                context.read<RequisitionUIBloc>().add(const AddRequisitionItem({
-                                      "item": null,
-                                      "supplier": null,
-                                      "amount": 1,
-                                    }));
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.black,
-                                  borderRadius: BorderRadius.circular(500),
-                                ),
-                                padding: const EdgeInsets.all(5),
-                                child: const Icon(
-                                  Icons.add,
-                                  color: Colors.white,
-                                ),
-                              )),
-                        ],
-                      ),
                       const SizedBox(height: 20),
+                      Text('NOTES', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontStyle: FontStyle.italic)),
+                      const SizedBox(height: 20),
+                      Text('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, diam quis aliquam lacinia, nisl nunc aliquet nunc, quis aliquam nisl nunc quis nisl..', style: Theme.of(context).textTheme.caption2.copyWith(fontStyle: FontStyle.italic), textAlign: TextAlign.center),
+                      const SizedBox(height: 30),
                       TextField(
                         decoration: const InputDecoration(
                           labelText: "Notes",
                         ),
                         maxLines: 4,
                         onChanged: (value) {},
+                      ),
+                      const SizedBox(height: 30),
+                      CustomButton(
+                        "Request for Approval",
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
                       ),
                       const SizedBox(height: 30),
                       Row(
@@ -145,7 +118,7 @@ class AddRequisition extends StatelessWidget {
                           CustomButton(
                             "SUBMIT",
                             onPressed: () {
-                              Navigator.pushNamed(context, '/view-requisition');
+                              Navigator.of(context).pop();
                             },
                           ),
                         ],

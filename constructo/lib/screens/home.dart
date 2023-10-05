@@ -29,7 +29,9 @@ class Home extends StatelessWidget {
                 const SizedBox(height: 25),
               ],
             ),
-            const ActionCard(icon: Icons.calendar_month, title: "Requisitions", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
+            ActionCard(icon: Icons.calendar_month, title: "Requisitions", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit", onTap: () {
+              Navigator.pushNamed(context, '/requisition-list');
+            }),
             const SizedBox(height: 20),
             const ActionCard(icon: Icons.people, title: "Deliveries", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
             const SizedBox(height: 20),
