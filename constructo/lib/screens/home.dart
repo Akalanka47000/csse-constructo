@@ -29,13 +29,31 @@ class Home extends StatelessWidget {
                 const SizedBox(height: 25),
               ],
             ),
-            ActionCard(icon: Icons.calendar_month, title: "Requisitions", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit", onTap: () {
-              Navigator.pushNamed(context, '/requisition-list');
-            }),
+            ActionCard(
+                icon: Icons.calendar_month,
+                title: "Requisitions",
+                description: "Manage your requisitions. This is where you would request and approve materials.",
+                onTap: () {
+                  Navigator.pushNamed(context, '/requisition-list');
+                }),
             const SizedBox(height: 20),
-            const ActionCard(icon: Icons.people, title: "Deliveries", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
+            ActionCard(
+              icon: Icons.file_present_outlined,
+              title: "Orders",
+              description: "Manage your purchase orders for requisitions. Find and track orders.",
+              onTap: () {
+                Navigator.pushNamed(context, '/order-list');
+              },
+            ),
             const SizedBox(height: 20),
-            const ActionCard(icon: Icons.file_present_outlined, title: "Items", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
+            ActionCard(
+              icon: Icons.people,
+              title: "Deliveries",
+              description: "Manage your deliveries. Add new deliveries and track existing ones. Get receipts and invoices.",
+              onTap: () {
+                Navigator.pushNamed(context, '/delivery-list');
+              },
+            ),
             const SizedBox(height: 20),
           ],
         ),
@@ -44,7 +62,7 @@ class Home extends StatelessWidget {
         children: [
           const Spacer(),
           CustomButton(
-            "NEW",
+            text: "NEW",
             prefixIcon: Icons.add,
             onPressed: () {
               Navigator.pushNamed(context, '/add-requisition');

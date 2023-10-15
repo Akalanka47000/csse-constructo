@@ -31,7 +31,7 @@ class RequisitionList extends StatelessWidget {
                     const SizedBox(width: 20),
                     Expanded(
                       child: CustomButton(
-                        "SEARCH",
+                        text: "SEARCH",
                         onPressed: () {},
                       ),
                     ),
@@ -64,7 +64,7 @@ class RequisitionList extends StatelessWidget {
         children: [
           const Spacer(),
           CustomButton(
-            "NEW",
+            text:  "NEW",
             prefixIcon: Icons.add,
             onPressed: () {
               Navigator.pushNamed(context, '/add-requisition');

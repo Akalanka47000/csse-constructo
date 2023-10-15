@@ -24,9 +24,12 @@ class Themes {
         padding: MaterialStateProperty.all<EdgeInsets>(
           const EdgeInsets.symmetric(vertical: 20, horizontal: 17),
         ),
-        backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+        backgroundColor: MaterialStateProperty.all<Color>(AppColors.primary),
         foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
       ),
+    ),
+    appBarTheme: const AppBarTheme(
+      color: AppColors.primary,
     ),
   );
 

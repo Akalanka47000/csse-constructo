@@ -5,13 +5,13 @@ import 'package:constructo/utils/utils.dart';
 
 class CustomButton extends StatelessWidget {
   final VoidCallback onPressed;
-  final String text;
+  final String? text;
   final Color? color;
   final Color? textColor;
   final EdgeInsetsGeometry? padding;
   final BorderRadius? borderRadius;
   final IconData? prefixIcon;
-  const CustomButton(this.text, {super.key, required this.onPressed, this.color, this.padding, this.borderRadius, this.textColor, this.prefixIcon});
+  const CustomButton({super.key, this.text, required this.onPressed, this.color, this.padding, this.borderRadius, this.textColor, this.prefixIcon});
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +31,14 @@ class CustomButton extends StatelessWidget {
         children: [
           if (prefixIcon != null)
             Padding(
-              padding: const EdgeInsets.only(right: 8),
+              padding: EdgeInsets.only(right: text != null ? 8: 0),
               child: Icon(
                 prefixIcon,
                 size: 25,
                 color: Colors.white,
               ),
             ),
-          Text(text, style: Theme.of(context).textTheme.bodySB.copyWith(color: textColor ?? Colors.white)),
+          if (text != null) Text(text!, style: Theme.of(context).textTheme.bodySB.copyWith(color: textColor ?? Colors.white)),
         ],
       ),
     );

@@ -202,7 +202,7 @@ packages:
     source: hosted
     version: "1.1.1"
   cloud_firestore:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: cloud_firestore
       sha256: "89d0786dd45eb4a058fe34de621ba2404a32f782b1d4055dbaedfb40f2fda74a"
@@ -305,6 +305,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.17"
+  enhanced_cloud_firestore:
+    dependency: "direct main"
+    description:
+      name: enhanced_cloud_firestore
+      sha256: "636c66fc3db7a5ca86c78191cdb6aa6213d9f57038f4d9ce140b89900cd1137c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0-blizzard.0"
   equatable:
     dependency: "direct main"
     description:

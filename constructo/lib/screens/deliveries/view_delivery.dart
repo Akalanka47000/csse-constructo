@@ -6,66 +6,42 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../components/common/core/buttons/custom_button.dart';
 
-class ViewRequisition extends StatelessWidget {
-  const ViewRequisition({super.key});
+class ViewDelivery extends StatelessWidget {
+  const ViewDelivery({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Constructo Express'),
+        title: const Text('Delivery Details'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 30),
-                  Row(
-                    children: [
-                      Text('Requisition Details', style: Theme.of(context).textTheme.title3B),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  const Divider(color: Colors.black),
-                  const SizedBox(height: 25),
-                  Row(
-                    children: [
-                      Text('REQ ######', style: Theme.of(context).textTheme.title3B),
-                      const Spacer(),
-                      Text(DateTime.now().toIso8601String().split("T")[0], style: Theme.of(context).textTheme.title3B),
-                    ],
-                  ),
-                  const SizedBox(height: 25),
-                  Text('Req Status: PENDING', style: Theme.of(context).textTheme.title3B),
+                  Text('REQ ######', style: Theme.of(context).textTheme.title3B),
+                  const SizedBox(height: 10),
+                  Text(DateTime.now().toIso8601String().split("T")[0], style: Theme.of(context).textTheme.bodyMedium),
+                  const SizedBox(height: 10),
+                  Text('Supplier: ABCD Pvt Ltd', style: Theme.of(context).textTheme.bodyB),
                   const SizedBox(height: 25),
                 ],
               ),
               BlocBuilder<RequisitionUIBloc, RequisitionUIState>(
                 builder: (context, state) {
                   return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextField(
-                        decoration: const InputDecoration(
-                          labelText: "Site Name",
-                        ),
-                        onChanged: (value) {},
-                      ),
-                      const SizedBox(height: 20),
-                      TextField(
-                        decoration: const InputDecoration(
-                          labelText: "Site Location",
-                        ),
-                        onChanged: (value) {},
-                      ),
                       const SizedBox(height: 20),
                       Row(
                         children: [
-                          Text('Item', style: Theme.of(context).textTheme.bodySB),
-                          const Spacer(),
-                          Text('Supplier', style: Theme.of(context).textTheme.bodySB),
+                          Text('Head', style: Theme.of(context).textTheme.bodySB),
                           const Spacer(),
                           Text('Amount', style: Theme.of(context).textTheme.bodySB),
                         ],
@@ -78,8 +54,7 @@ class ViewRequisition extends StatelessWidget {
                               children: [
                                 Text('Item#', style: Theme.of(context).textTheme.bodySB.copyWith(color: Colors.black.withOpacity(0.5), fontStyle: FontStyle.italic)),
                                 const Spacer(),
-                                Text('Supplier#', style: Theme.of(context).textTheme.bodySB.copyWith(color: Colors.black.withOpacity(0.5), fontStyle: FontStyle.italic)),
-                                const Spacer(),
+
                                 Text('##', style: Theme.of(context).textTheme.bodySB.copyWith(color: Colors.black.withOpacity(0.5), fontStyle: FontStyle.italic)),
                               ],
                             ),
@@ -99,31 +74,6 @@ class ViewRequisition extends StatelessWidget {
                         onChanged: (value) {},
                       ),
                       const SizedBox(height: 30),
-                      CustomButton(
-                        text: "Request for Approval",
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      const SizedBox(height: 30),
-                      Row(
-                        children: [
-                          CustomButton(
-                            text: "SAVE DRAFT",
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                          const Spacer(),
-                          CustomButton(
-                            text: "SUBMIT",
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 30),
                     ],
                   );
                 },
@@ -131,6 +81,18 @@ class ViewRequisition extends StatelessWidget {
             ],
           ),
         ),
+      ),
+      floatingActionButton: Row(
+        children: [
+          const Spacer(),
+          CustomButton(
+            borderRadius: BorderRadius.circular(300),
+            prefixIcon: Icons.edit,
+            onPressed: () {
+              Navigator.pushNamed(context, '/add-delivery', arguments: {'delivery': {}});
+            },
+          ),
+        ],
       ),
     );
   }

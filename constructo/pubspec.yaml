@@ -37,8 +37,8 @@ dependencies:
   bloc_concurrency: 0.2.2
   cached_network_image: 3.2.3
   carousel_slider: 4.2.1
-  cloud_firestore: 4.7.0
   equatable: 2.0.5
+  enhanced_cloud_firestore: 2.0.0-blizzard.0
   firebase_auth: 4.7.0
   firebase_core: 2.15.0
   firebase_ui_auth: 1.4.1
