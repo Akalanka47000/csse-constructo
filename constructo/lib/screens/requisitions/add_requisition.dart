@@ -173,6 +173,7 @@ class AddRequisition extends StatelessWidget {
                           CustomButton(
                             text: "SUBMIT",
                             onPressed: () {
+                              context.read<RequisitionUIBloc>().add(const SubmitRequisition());
                               Navigator.pushNamed(context, '/view-requisition');
                             },
                           ),

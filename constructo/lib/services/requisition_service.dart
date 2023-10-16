@@ -4,14 +4,11 @@ import '../models/general/error_message.dart';
 import 'core/firestore_service.dart';
 
 class RequisitionService {
-  static Future<List<Requisition>>? getRequisitions({dynamic filters}) async {
-    List<dynamic> sorts = [
-      {'name': 'created_at', 'descending': true}
-    ];
-    final responseDocs = await FirestoreService.read('requisitions', filters ?? [], sorts: sorts);
-    List<Requisition> requisitions = [];
+  static Future<List<dynamic>>? getRequisitions({dynamic filters}) async {
+    final responseDocs = await FirestoreService.read('requisitions', filters ?? [], sorts: []);
+    List<dynamic> requisitions = [];
     for (dynamic responseDoc in responseDocs) {
-      requisitions.add(Requisition.fromDocumentSnapshot(responseDoc));
+      requisitions.add(Requisition.fromDocumentSnapshot(responseDoc).toJSON());
     }
     return requisitions;
   }

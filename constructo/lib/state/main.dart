@@ -1,4 +1,5 @@
 import 'package:constructo/state/ui/delivery/delivery_bloc.dart';
+import 'package:constructo/state/ui/order/order_bloc.dart';
 import 'package:constructo/state/ui/requisition/requisition_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/single_child_widget.dart';
@@ -15,4 +16,5 @@ List<SingleChildWidget> rootBlocProviders = [
   BlocProvider(create: (context) => LoaderBloc()),
   BlocProvider(create: (context) => RequisitionUIBloc()),
   BlocProvider(create: (context) => DeliveryUIBloc()),
+  BlocProvider(create: (context) => OrderUIBloc()),
 ];

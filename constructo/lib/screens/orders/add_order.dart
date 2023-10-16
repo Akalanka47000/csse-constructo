@@ -1,128 +1,133 @@
 import 'package:constructo/components/common/common.dart';
 import 'package:constructo/config/themes/text.dart';
 import 'package:constructo/state/ui/delivery/delivery_bloc.dart';
+import 'package:constructo/state/ui/order/order_bloc.dart' as order_bloc;
+import 'package:flodash/modules/collection/filter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AddOrder extends StatelessWidget {
+import '../../state/ui/requisition/requisition_bloc.dart';
+
+class AddOrder extends StatefulWidget {
   const AddOrder({super.key});
+
+  @override
+  State<AddOrder> createState() => _AddOrderState();
+}
+
+class _AddOrderState extends State<AddOrder> {
+  @override
+  initState() {
+    super.initState();
+    BlocProvider.of<RequisitionUIBloc>(context).add(const LoadRequisitions());
+  }
 
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as dynamic;
-    print(args);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(args?["delivery"] != null ? "Edit Delivery Receipt" : 'New Delivery'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(height: 30),
-              BlocBuilder<DeliveryUIBloc, DeliveryUIState>(
-                builder: (context, state) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+    return BlocBuilder<RequisitionUIBloc, RequisitionUIState>(
+      builder: (context, state) {
+        return BlocBuilder<order_bloc.OrderUIBloc, order_bloc.OrderUIState>(
+          builder: (context, orderState) {
+            return Scaffold(
+              appBar: AppBar(
+                title: Text(args?["order"] != null ? "Edit Order" : 'New Order'),
+              ),
+              body: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: SingleChildScrollView(
+                  child: Column(
                     children: [
-                      DropdownInput(placeholder: "Select Requisition Approval", items: state.suppliers),
-                      const SizedBox(height: 20),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.75,
-                        child: CustomButton(
-                          text: "GENERATE PO NUMBER",
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/view-delivery');
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      DropdownInput(placeholder: "Select Shipping Address", items: state.suppliers),
-                      const SizedBox(height: 20),
-                      DropdownInput(placeholder: "Select Supplier Address", items: state.suppliers),
-                      const SizedBox(height: 20),
-                      Row(
-                        children: [
-                          Text('Select Items', style: Theme.of(context).textTheme.bodySB),
-                          const Spacer(),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      for (dynamic item in state.selectedItems)
-                        Column(
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(child: DropdownInput(placeholder: "Select", items: state.items, value: item["item"])),
-
-                                const SizedBox(width: 20),
-                                GestureDetector(
-                                  onTap: () {
-                                    context.read<DeliveryUIBloc>().add(RemoveDeliveryItem(item));
-                                  },
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.black,
-                                      borderRadius: BorderRadius.circular(500),
-                                    ),
-                                    padding: const EdgeInsets.all(5),
-                                    child: const Icon(Icons.close, color: Colors.white),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 20),
-                          ],
-                        ),
+                      const SizedBox(height: 30),
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              const Divider(color: Colors.black),
-                              SizedBox(
-                                width: 150,
-                                child: CustomButton(
-                                  text: "NEW",
-                                  prefixIcon: Icons.add,
-                                  onPressed: () {
-                                    context.read<DeliveryUIBloc>().add(const AddDeliveryItem({
-                                          "item": null,
-                                          "supplier": null,
-                                          "amount": 1,
-                                        }));
-                                  },
-                                ),
+                          DropdownInput(
+                            placeholder: "Select Requisition Approval",
+                            items: filter(state.requisitions, (e) {
+                              return e["status"] == "approved";
+                            }).map((e) => e["id"]).toList(),
+                            value: orderState.selectedRequisition["id"],
+                            onChange: (value) {
+                              final requisition = state.requisitions.firstWhere((element) => element["id"] == value);
+                              context.read<order_bloc.OrderUIBloc>().add(order_bloc.SetSelectedRequisition(requisition));
+                              context.read<order_bloc.OrderUIBloc>().add(order_bloc.SetSupplierAddress(requisition["siteLocation"]));
+                            },
+                          ),
+                          const SizedBox(height: 20),
+                          if (orderState.orderNumber == "")
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.75,
+                              child: CustomButton(
+                                text: "GENERATE PO NUMBER",
+                                onPressed: () {
+                                  context.read<order_bloc.OrderUIBloc>().add(const order_bloc.GenerateOrderNumber());
+                                },
                               ),
+                            ),
+                          if (orderState.orderNumber != "") Text("Order Number: ${orderState.orderNumber}", style: Theme.of(context).textTheme.bodySB),
+                          const SizedBox(height: 20),
+                          TextField(
+                            decoration: const InputDecoration(
+                              labelText: "Enter Shipping Address",
+                            ),
+                            onChanged: (value) {
+                              context.read<order_bloc.OrderUIBloc>().add(order_bloc.SetShippingAddress(value));
+                            },
+                          ),
+                          const SizedBox(height: 20),
+                          Text(
+                            "Supplier Address",
+                            style: Theme.of(context).textTheme.bodyB,
+                          ),
+                          const SizedBox(height: 15),
+                          Text(
+                            orderState.supplierAddress,
+                            style: Theme.of(context).textTheme.body,
+                          ),
+                          const SizedBox(height: 20),
+                          Row(
+                            children: [
+                              Text('Selected Items', style: Theme.of(context).textTheme.bodySB),
+                              const Spacer(),
                             ],
                           ),
+                          const SizedBox(height: 20),
+                          if (orderState.selectedRequisition["items"] != null)
+                            for (dynamic item in orderState.selectedRequisition["items"])
+                              Text(
+                                "• ${item["item"]}",
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                          const SizedBox(height: 20),
+                          TextField(
+                            decoration: const InputDecoration(
+                              labelText: "Notes",
+                            ),
+                            maxLines: 4,
+                            onChanged: (value) {
+                              context.read<order_bloc.OrderUIBloc>().add(order_bloc.SetNotes(value));
+                            },
+                          ),
+                          const SizedBox(height: 30),
+                          CustomButton(
+                            text: "CREATE PURCHASE ORDER",
+                            onPressed: () {
+                              context.read<order_bloc.OrderUIBloc>().add(const order_bloc.SubmitOrder());
+                              Navigator.pushNamed(context, '/view-order');
+                            },
+                          ),
+                          const SizedBox(height: 30),
                         ],
-                      ),
-                      const SizedBox(height: 20),
-                      TextField(
-                        decoration: const InputDecoration(
-                          labelText: "Notes",
-                        ),
-                        maxLines: 4,
-                        onChanged: (value) {},
-                      ),
-                      const SizedBox(height: 30),
-                      CustomButton(
-                        text: "CREATE PURCHASE ORDER",
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/view-order');
-                        },
-                      ),
-                      const SizedBox(height: 30),
+                      )
                     ],
-                  );
-                },
-              )
-            ],
-          ),
-        ),
-      ),
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

@@ -1,12 +1,15 @@
 import 'package:constructo/config/themes/text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../state/ui/order/order_bloc.dart';
 import '../common/core/buttons/custom_button.dart';
 
 class DeliveryCard extends StatelessWidget {
   final String id;
-  final DateTime date;
-  final List<String> items;
-  const DeliveryCard({Key? key, required this.id, required this.date, required this.items}) : super(key: key);
+  final String date;
+  final List<dynamic> items;
+  final dynamic delivery;
+  const DeliveryCard({Key? key, required this.id, required this.date, required this.items, this.delivery}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +23,7 @@ class DeliveryCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(date.toIso8601String().split("T")[0], style: Theme.of(context).textTheme.bodySB),
+              Text(date.split("T")[0], style: Theme.of(context).textTheme.bodySB),
             ],
           ),
           const SizedBox(height: 10),
@@ -41,14 +44,9 @@ class DeliveryCard extends StatelessWidget {
               CustomButton(
                 text: "View",
                 onPressed: () {
-                  Navigator.pushNamed(context, '/view-requisition');
+                  context.read<OrderUIBloc>().add(SetSelectedOrder(delivery));
+                  Navigator.pushNamed(context, '/view-delivery');
                 },
-                padding: const EdgeInsets.all(12),
-              ),
-              const SizedBox(width: 10),
-              CustomButton(
-                text: "Edit",
-                onPressed: () {},
                 padding: const EdgeInsets.all(12),
               ),
             ],

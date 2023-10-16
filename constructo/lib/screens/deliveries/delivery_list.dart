@@ -1,9 +1,26 @@
 import 'package:constructo/components/common/common.dart';
 import 'package:constructo/components/delivery/card.dart';
+import 'package:flodash/flodash.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class DeliveryList extends StatelessWidget {
+import '../../state/ui/order/order_bloc.dart';
+import '../../state/ui/requisition/requisition_bloc.dart';
+
+class DeliveryList extends StatefulWidget {
   const DeliveryList({super.key});
+
+  @override
+  State<DeliveryList> createState() => _DeliveryListState();
+}
+
+class _DeliveryListState extends State<DeliveryList> {
+  @override
+  initState() {
+    super.initState();
+    BlocProvider.of<RequisitionUIBloc>(context).add(const LoadRequisitions());
+    BlocProvider.of<OrderUIBloc>(context).add(const LoadOrders());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,42 +30,40 @@ class DeliveryList extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: ListView(
-          children: [
-            const SizedBox(height: 30),
-            DeliveryCard(id: "#234s", date: DateTime.now(),items: const [
-              "Item 1",
-              "Item 2",
-            ]),
-            const SizedBox(height: 20),
-            DeliveryCard(id: "#csdf", date: DateTime.now(),items: const [
-              "Item 1",
-              "Item 2",
-            ]),
-            const SizedBox(height: 20),
-            DeliveryCard(id: "#sd12", date: DateTime.now(),  items: const [
-              "Item 1",
-              "Item 2",
-            ]),
-            DeliveryCard(id: "#455424", date: DateTime.now(),  items: const [
-              "Item 1",
-              "Item 2",
-            ]),
-            const SizedBox(height: 20),
-          ],
+        child: BlocBuilder<RequisitionUIBloc, RequisitionUIState>(
+          builder: (context, requisitionState) {
+            return BlocBuilder<OrderUIBloc, OrderUIState>(
+              builder: (context, state) {
+                return ListView(
+                  children: [
+                    const SizedBox(height: 30),
+                    for (dynamic delivery in filter(state.orders, (e) {
+                      return e["status"] == "paid" || e["status"] == "delivered";
+                    }))
+                      Column(
+                        children: [
+                          const SizedBox(height: 20),
+                          Builder(
+                            builder: (context) {
+                              final requisition = first(filter(requisitionState.requisitions, (e) {
+                                return e["id"] == delivery["requisition"];
+                              }));
+                              return DeliveryCard(
+                                id: delivery["id"],
+                                date: delivery["createdAt"],
+                                items: requisition["items"].map((item) => item["item"]).toList(),
+                                delivery: delivery,
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                  ],
+                );
+              },
+            );
+          },
         ),
-      ),
-      floatingActionButton: Row(
-        children: [
-          const Spacer(),
-          CustomButton(
-            borderRadius: BorderRadius.circular(300),
-            prefixIcon: Icons.add,
-            onPressed: () {
-              Navigator.pushNamed(context, '/add-delivery');
-            },
-          ),
-        ],
       ),
     );
   }

@@ -1,5 +1,7 @@
 import 'package:constructo/config/themes/text.dart';
+import 'package:constructo/state/ui/requisition/requisition_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../common/core/buttons/custom_button.dart';
 
 class RequisitionCard extends StatelessWidget {
@@ -7,7 +9,8 @@ class RequisitionCard extends StatelessWidget {
   final DateTime date;
   final String status;
   final List<String> items;
-  const RequisitionCard({Key? key, required this.id, required this.date, required this.status, required this.items}) : super(key: key);
+  final dynamic requisition;
+  const RequisitionCard({Key? key, required this.id, required this.date, required this.status, required this.items, this.requisition}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,14 +45,9 @@ class RequisitionCard extends StatelessWidget {
               CustomButton(
                 text: "Details",
                 onPressed: () {
+                  context.read<RequisitionUIBloc>().add(SetSelectedRequisition(requisition));
                   Navigator.pushNamed(context, '/view-requisition');
                 },
-                padding: const EdgeInsets.all(12),
-              ),
-              const SizedBox(width: 20),
-              CustomButton(
-                text:  "Edit",
-                onPressed: () {},
                 padding: const EdgeInsets.all(12),
               ),
             ],

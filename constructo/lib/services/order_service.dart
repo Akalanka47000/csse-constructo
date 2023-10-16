@@ -1,22 +1,20 @@
 import 'package:constructo/models/requisition.dart';
 import 'package:constructo/models/general/success_message.dart';
 import '../models/general/error_message.dart';
+import '../models/order.dart';
 import 'core/firestore_service.dart';
 
 class OrderService {
-  static Future<List<Requisition>>? getOrders({dynamic filters}) async {
-    List<dynamic> sorts = [
-      {'name': 'created_at', 'descending': true}
-    ];
-    final responseDocs = await FirestoreService.read('orders', filters ?? [], sorts: sorts);
-    List<Requisition> orders = [];
+  static Future<List<dynamic>>? getOrders({dynamic filters}) async {
+    final responseDocs = await FirestoreService.read('orders', filters ?? [], sorts: []);
+    List<dynamic> orders = [];
     for (dynamic responseDoc in responseDocs) {
-      orders.add(Requisition.fromDocumentSnapshot(responseDoc));
+      orders.add(Order.fromDocumentSnapshot(responseDoc).toJSON());
     }
     return orders;
   }
 
-  static Future<dynamic>? create(Requisition order) async {
+  static Future<dynamic>? create(Order order) async {
     final res = await FirestoreService.write(
       'orders',
       order.toJSON(),
@@ -28,7 +26,7 @@ class OrderService {
     return ErrorMessage('Sorry, unable to place this order');
   }
 
-  static Future<dynamic> update(Requisition order) async {
+  static Future<dynamic> update(Order order) async {
     final res = await FirestoreService.update(
       'orders',
       [
@@ -42,7 +40,7 @@ class OrderService {
     return ErrorMessage('Sorry, unable to update this order');
   }
 
-  static Future<dynamic> delete(Requisition order) async {
+  static Future<dynamic> delete(Order order) async {
     final res = await FirestoreService.delete(
       'orders',
       [

@@ -37,7 +37,7 @@ class Routes {
       case addRequisition:
         return PageTransition(child: const AddRequisition(), type: PageTransitionType.fade);
       case viewRequisition:
-        return PageTransition(child: const ViewRequisition(), type: PageTransitionType.fade);
+        return PageTransition(child: ViewRequisition(), type: PageTransitionType.fade);
       case requisitionList:
         return PageTransition(child: const RequisitionList(), type: PageTransitionType.fade);
       case addDelivery:

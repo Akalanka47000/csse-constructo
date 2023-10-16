@@ -4,6 +4,10 @@ abstract class RequisitionUIEvent {
   const RequisitionUIEvent();
 }
 
+class LoadRequisitions extends RequisitionUIEvent {
+  const LoadRequisitions();
+}
+
 class AddRequisitionItem extends RequisitionUIEvent {
   final Map<String, dynamic> item;
   const AddRequisitionItem(this.item);
@@ -42,4 +46,9 @@ class SetSiteLocation extends RequisitionUIEvent {
 class SetNotes extends RequisitionUIEvent {
   final String notes;
   const SetNotes(this.notes);
+}
+
+class SetSelectedRequisition extends RequisitionUIEvent {
+  final dynamic requisition;
+  const SetSelectedRequisition(this.requisition);
 }

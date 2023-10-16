@@ -8,8 +8,9 @@ class RequisitionUIState extends Equatable {
   late final String siteLocation;
   late final String notes;
   late final String status;
+  late final dynamic selectedRequisition;
 
-  List<Map<String, dynamic>> selectedItems = [
+  List<dynamic> selectedItems = [
     {
       "item": "",
       "supplier": "",
@@ -17,7 +18,7 @@ class RequisitionUIState extends Equatable {
     }
   ];
 
-  RequisitionUIState({List<dynamic>? requisitions, List<String>? items, List<String>? suppliers, String? siteName, String? siteLocation, String? notes, List<Map<String, dynamic>>? selectedItems, String? status}) {
+  RequisitionUIState({List<dynamic>? requisitions, List<String>? items, List<String>? suppliers, String? siteName, String? siteLocation, String? notes, List<dynamic>? selectedItems, String? status, dynamic selectedRequisition}) {
     this.requisitions = requisitions ?? const [];
     this.items = items ??
         const [
@@ -49,9 +50,10 @@ class RequisitionUIState extends Equatable {
           }
         ];
     this.status = 'pending';
+    this.selectedRequisition = selectedRequisition ?? {};
   }
 
-  RequisitionUIState copyWith({List<dynamic>? requisitions, List<String>? items, List<String>? suppliers, String? siteName, String? siteLocation, String? notes, List<Map<String, dynamic>>? selectedItems, String? status}) => RequisitionUIState(
+  RequisitionUIState copyWith({List<dynamic>? requisitions, List<String>? items, List<String>? suppliers, String? siteName, String? siteLocation, String? notes, List<dynamic>? selectedItems, String? status, Map? selectedRequisition}) => RequisitionUIState(
         requisitions: requisitions ?? this.requisitions,
         items: items ?? this.items,
         suppliers: suppliers ?? this.suppliers,
@@ -60,10 +62,11 @@ class RequisitionUIState extends Equatable {
         notes: notes ?? this.notes,
         selectedItems: selectedItems ?? this.selectedItems,
         status: status ?? this.status,
+        selectedRequisition: selectedRequisition ?? this.selectedRequisition,
       );
 
   @override
-  List<Object> get props => [requisitions, items, suppliers, siteName, siteLocation, notes, selectedItems, status];
+  List<Object> get props => [requisitions, items, suppliers, siteName, siteLocation, notes, selectedItems, status, selectedRequisition];
 
   @override
   RequisitionUIState? fromJson(Map<String, dynamic> json) {
@@ -75,6 +78,7 @@ class RequisitionUIState extends Equatable {
       notes: json['notes'],
       selectedItems: json['selectedItems'],
       status: json['status'],
+      selectedRequisition: json['selectedRequisition'],
     );
   }
 
@@ -88,6 +92,7 @@ class RequisitionUIState extends Equatable {
       'notes': state.notes,
       'selectedItems': state.selectedItems,
       'status': state.status,
+      'selectedRequisition': state.selectedRequisition,
     };
   }
 }
