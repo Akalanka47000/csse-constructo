@@ -1,10 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 part 'delivery_event.dart';
 part 'delivery_state.dart';
 
-class DeliveryUIBloc extends Bloc<DeliveryUIEvent, DeliveryUIState> {
+class DeliveryUIBloc extends HydratedBloc<DeliveryUIEvent, DeliveryUIState> {
   DeliveryUIBloc() : super(DeliveryUIState()) {
     on<AddDeliveryItem>((event, emit) {
       emit(state.copyWith(selectedItems:
@@ -26,5 +27,14 @@ class DeliveryUIBloc extends Bloc<DeliveryUIEvent, DeliveryUIState> {
     on<SetNotes>((event, emit) {
       emit(state.copyWith(notes: event.notes));
     });
+  }
+  @override
+  DeliveryUIState? fromJson(Map<String, dynamic> json) {
+    return state.fromJson(json);
+  }
+
+  @override
+  Map<String, dynamic>? toJson(DeliveryUIState state) {
+    return state.toJson(state);
   }
 }

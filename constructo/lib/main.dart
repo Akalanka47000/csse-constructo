@@ -13,10 +13,15 @@ import 'package:constructo/config/themes/themes.dart';
 import 'package:constructo/routes/routes.dart';
 import 'package:constructo/state/ui/global/global_bloc.dart';
 import 'package:constructo/utils/app_http_overrides.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main() async {
   Paint.enableDithering = true;
   WidgetsFlutterBinding.ensureInitialized();
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: await getApplicationDocumentsDirectory(),
+  );
   if (Secrets.appEnv == "local") {
     HttpOverrides.global = AppHttpOverrides();
     await dotenv.load(fileName: ".env");

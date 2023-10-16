@@ -41,14 +41,18 @@ class AddRequisition extends StatelessWidget {
                         decoration: const InputDecoration(
                           labelText: "Site Name",
                         ),
-                        onChanged: (value) {},
+                        onChanged: (value) {
+                          context.read<RequisitionUIBloc>().add(SetSiteName(value));
+                        },
                       ),
                       const SizedBox(height: 20),
                       TextField(
                         decoration: const InputDecoration(
                           labelText: "Site Location",
                         ),
-                        onChanged: (value) {},
+                        onChanged: (value) {
+                          context.read<RequisitionUIBloc>().add(SetSiteLocation(value));
+                        },
                       ),
                       const SizedBox(height: 20),
                       Row(
@@ -67,9 +71,29 @@ class AddRequisition extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                Expanded(child: DropdownInput(placeholder: "Item", items: state.items, value: item["item"])),
+                                Expanded(
+                                  child: DropdownInput(
+                                    placeholder: "Item",
+                                    items: state.items,
+                                    value: item["item"],
+                                    padding: const EdgeInsets.all(5),
+                                    onChange: (value) {
+                                      context.read<RequisitionUIBloc>().add(UpdateItem("item", value, item));
+                                    }
+                                  ),
+                                ),
                                 const SizedBox(width: 10),
-                                Expanded(child: DropdownInput(placeholder: "Supplier", items: state.suppliers, value: item["supplier"])),
+                                Expanded(
+                                  child: DropdownInput(
+                                    placeholder: "Supplier",
+                                    items: state.suppliers,
+                                    value: item["supplier"],
+                                    padding: const EdgeInsets.all(5),
+                                    onChange: (value) {
+                                      context.read<RequisitionUIBloc>().add(UpdateItem("supplier", value, item));
+                                    }
+                                  ),
+                                ),
                                 const SizedBox(width: 10),
                                 Expanded(
                                   child: TextField(
@@ -77,10 +101,12 @@ class AddRequisition extends StatelessWidget {
                                       labelText: "Amount",
                                     ),
                                     keyboardType: TextInputType.number,
-                                    onChanged: (value) {},
+                                    onChanged: (value) {
+                                      context.read<RequisitionUIBloc>().add(UpdateItem("amount", value, item));
+                                    },
                                   ),
                                 ),
-                                const SizedBox(width: 20),
+                                const SizedBox(width: 8),
                                 GestureDetector(
                                   onTap: () {
                                     context.read<RequisitionUIBloc>().add(RemoveRequisitionItem(item));
@@ -90,7 +116,7 @@ class AddRequisition extends StatelessWidget {
                                       color: Colors.black,
                                       borderRadius: BorderRadius.circular(500),
                                     ),
-                                    padding:  const EdgeInsets.all(5),
+                                    padding: const EdgeInsets.all(5),
                                     child: const Icon(Icons.close, color: Colors.white),
                                   ),
                                 ),
@@ -130,7 +156,9 @@ class AddRequisition extends StatelessWidget {
                           labelText: "Notes",
                         ),
                         maxLines: 4,
-                        onChanged: (value) {},
+                        onChanged: (value) {
+                          context.read<RequisitionUIBloc>().add(SetNotes(value));
+                        },
                       ),
                       const SizedBox(height: 30),
                       Row(

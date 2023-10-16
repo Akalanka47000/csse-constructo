@@ -14,6 +14,13 @@ class RemoveRequisitionItem extends RequisitionUIEvent {
   const RemoveRequisitionItem(this.item);
 }
 
+class UpdateItem extends RequisitionUIEvent {
+  final String key;
+  final String value;
+  final dynamic item;
+  const UpdateItem(this.key, this.value, this.item);
+}
+
 class SaveDraft extends RequisitionUIEvent {
   const SaveDraft();
 }

@@ -53,4 +53,28 @@ class DeliveryUIState extends Equatable {
 
   @override
   List<Object> get props => [items, suppliers, reference, supplier, notes, selectedItems];
+
+  @override
+  DeliveryUIState? fromJson(Map<String, dynamic> json) {
+    return DeliveryUIState(
+      items: json['items'],
+      suppliers: json['suppliers'],
+      reference: json['reference'],
+      supplier: json['supplier'],
+      notes: json['notes'],
+      selectedItems: json['selectedItems'],
+    );
+  }
+
+  @override
+  Map<String, dynamic>? toJson(DeliveryUIState state) {
+    return {
+      'items': state.items,
+      'suppliers': state.suppliers,
+      'reference': state.reference,
+      'supplier': state.supplier,
+      'notes': state.notes,
+      'selectedItems': state.selectedItems,
+    };
+  }
 }
